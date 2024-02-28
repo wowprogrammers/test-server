@@ -30,12 +30,15 @@ const userSchema = new mongoose.Schema({
     attributes: {
         website: {
             type: String,
+            trim: true,
         },
         designation: {
             type: String,
+            trim: true,
         },
         company: {
             type: String,
+            trim: true,
         },
     },
 }, {

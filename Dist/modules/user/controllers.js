@@ -1,5 +1,12 @@
+import jwt from 'jsonwebtoken';
+import environments from '../../constants/environments.js';
 import { returnError } from '../../utils/errorHandlingUtils.js';
 import UserRepository from './repositories.js';
+const signToken = (id) => {
+    return jwt.sign({ id }, environments.jwtSecret, {
+        expiresIn: environments.jwtExpires,
+    });
+};
 const userController = {
     contactUser: async (req, res) => {
         try {
@@ -11,9 +18,12 @@ const userController = {
                 tags,
                 attributes,
             });
+            const token = signToken(user._id);
+            // can send to client in res as well cookie
             res.status(201).json({
                 success: true,
                 user,
+                token,
             });
         }
         catch (error) {

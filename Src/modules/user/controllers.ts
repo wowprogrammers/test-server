@@ -1,6 +1,15 @@
 import { Request, Response } from 'express'
+import jwt from 'jsonwebtoken'
+import { ObjectId } from 'mongoose'
+import environments from '../../constants/environments.js'
 import { returnError } from '../../utils/errorHandlingUtils.js'
 import UserRepository from './repositories.js'
+const signToken = (id: ObjectId) => {
+	return jwt.sign({ id }, environments.jwtSecret, {
+		expiresIn: environments.jwtExpires,
+	})
+}
+
 const userController = {
 	contactUser: async (req: Request, res: Response) => {
 		try {
@@ -14,9 +23,12 @@ const userController = {
 				attributes,
 			})
 
+			const token = signToken(user._id)
+			// can send to client in res as well cookie
 			res.status(201).json({
 				success: true,
 				user,
+				token,
 			})
 		} catch (error) {
 			returnError(req, res, error)
