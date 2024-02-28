@@ -35,12 +35,15 @@ const userSchema: Schema<IUserModule.IUserObject> =
 			attributes: {
 				website: {
 					type: String,
+					trim: true,
 				},
 				designation: {
 					type: String,
+					trim: true,
 				},
 				company: {
 					type: String,
+					trim: true,
 				},
 			},
 		},
